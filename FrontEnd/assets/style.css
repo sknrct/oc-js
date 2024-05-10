@@ -94,7 +94,13 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
-
+nav a {
+	text-decoration: none;
+	color: #3D3D3D;
+}
+nav a:hover {
+	color: #B1663C;
+}
 li:hover {
 	color: #B1663C;
 }
@@ -125,7 +131,7 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
-.gallery {
+#gallery {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
@@ -133,7 +139,7 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
-.gallery img {
+#gallery img {
 	width: 100%;
 
 }
@@ -185,4 +191,231 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+#categories {
+	display: flex;
+	gap: 10px;
+	margin: 0 auto;
+}
 
+.filterButton {
+	padding: 10px;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+	border: none;
+	cursor: pointer;
+}
+
+/* .editButton {
+	position: absolute;
+    top: 545px;
+    right: 1100px;
+	background: none;
+	border: none;
+	cursor: pointer;
+} */
+
+.location-modal {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.location-modal a {
+	margin-bottom: 30px;
+}
+
+/* ---- PAGE LOGIN ---- */
+
+html {
+	background-color: #FFFEF8 ;
+}
+
+#login {
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: auto;
+	align-items: center;
+}
+
+form {
+	width: 50%;
+}
+
+section h2 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+#login button {
+	padding: 5px 10px;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+	padding: 10px;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+	border: none;
+}
+
+#login span {
+	display: flex;
+	justify-content: center;
+}
+
+#login a {
+	color: #3D3D3D;
+}
+
+.username {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 30px;
+}
+
+.username label,
+.psw label {
+	margin-bottom: 5px;
+}
+
+.psw {
+	display: flex;
+	flex-direction: column;
+}
+
+input {
+	border: none;
+	box-shadow: 0px 4px 14px rgb(0 0 0 / 9%);
+	padding: 5px;
+}
+
+/* ---- MODAL---- */
+
+/* .modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 25%;
+	top: 25%;
+	width: 50%;
+	height: 50%;
+	overflow: auto;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.4);
+}
+
+#closeModal {
+	cursor: pointer;
+} */
+
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+#titleModal {
+	padding: 50px 0;
+}
+
+.modal-wrapper {
+	overflow: auto;
+	width: 50%;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	padding: 20px;
+	background-color: #FFF;
+	border-radius: 10px;
+}
+
+.modalBar {
+    border-top: 1px solid #CCCCCC;
+    margin: 20px auto;
+	width: 80%;
+}
+
+.modal-wrapper p {
+	font-size: 26px;
+	font-family: 'Work Sans';
+	text-align: center;
+}
+
+.modalButton {
+	padding: 5px 10px;
+		display: flex;
+		justify-content: center;
+		cursor: pointer;
+		padding: 10px;
+		font-family: 'Syne';
+		font-weight: 700;
+		color: white;
+		background-color: #1D6154;
+		margin : 2em auto ;
+		width: 180px;
+		text-align: center;
+		border-radius: 60px ;
+		border: none;
+		margin-top: 50px;
+}
+
+.modal-wrapper .js-modal-close {
+	background: none;
+	border: none;
+	float: right;
+	cursor: pointer;
+}
+
+.contentModal {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 20px;
+	width: 80%;
+	margin: auto;
+	padding: 50px;
+}
+
+.modalFigure {
+	width: 100%;
+	height: auto;
+	position: relative;
+}
+
+.modalFigure img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.deleteButtonModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    cursor: pointer;
+    color: white;
+	background-color: black;
+	border-radius: 5px;
+	font-size: 17px;
+	padding: 10px;
+}
