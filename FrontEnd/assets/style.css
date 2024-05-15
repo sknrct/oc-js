@@ -55,8 +55,28 @@ body {
 }
 header {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
 	margin: 50px 0
+}
+header a {
+	text-decoration-line: none;
+}
+header .editMode {
+	background-color: black;
+	width: 100%;
+	height: 60px;
+	margin-bottom: 20px;
+}
+.editMode {
+	display: flex;
+}
+.editMode p,
+.editMode i {
+	color: white;
+	display: flex;
+	align-items: center;
+	margin: auto;
 }
 section {
 	margin: 50px 0
@@ -68,14 +88,14 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
+	text-decoration-line: none;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -83,6 +103,11 @@ h2{
 	font-weight: 700;
 	font-size: 30px;
 	color: #1D6154
+}
+nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 nav ul {
 	display: flex;

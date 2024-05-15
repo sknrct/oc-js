@@ -113,9 +113,51 @@ function isLogged() {
     return false;
 }
 
-function changeLogin() {
-    const login = document.querySelector("#login");
-    login.innerHTML = 'logout';
+function updateLoginButton() {
+    const loginButton = document.getElementById("login");
+    const editButton = document.querySelector(".js-modal");
+    const editMode = document.querySelector(".editMode");
+
+    if (isLogged()) {
+        loginButton.innerHTML = "logout";
+        loginButton.setAttribute("href", "#"); // Met à jour le href avec "#" pour empêcher la navigation
+    } else {
+        loginButton.innerHTML = "login";
+        loginButton.setAttribute("href", "login.html");
+        editButton.style.display = "none";
+        editMode.style.display = "none";
+
+    }
+}
+
+window.addEventListener("load", updateLoginButton);
+
+const loginButton = document.getElementById("login");
+loginButton.addEventListener("click", toggleLogin);
+
+// Fonction pour gérer la connexion/déconnexion
+function toggleLogin(event) {
+    event.preventDefault(); // Empêcher le comportement par défaut du lien
+
+    if (isLogged()) {
+        // Si l'utilisateur est connecté, le déconnecter
+        logout();
+    } else {
+        // Rediriger vers la page de connexion
+        window.location.href = "login.html";
+    }
+}
+
+// Fonction pour déconnecter l'utilisateur
+function logout() {
+    localStorage.removeItem('token'); // Supprimer le token du localStorage
+    window.location.href = "index.html"; // Redirection vers la page d'accueil
+}
+
+// Fonction pour afficher le bouton "Modifier"
+function showEditButton() {
+    const editButton = document.querySelector(".js-modal");
+    editButton.style.display = "block";
 }
 
 function removeCategories() {
@@ -123,11 +165,17 @@ function removeCategories() {
     divCategories.remove();
 }
 
+function editMode() {
+    const editMode = document.querySelector(".editMode");
+    editMode.style.display = "flex";
+    
+}
+
 if (isLogged()) {
-    changeLogin();
+    updateLoginButton();
     removeCategories();
-    //createEditButton();
-    //createEditModal();
+    showEditButton();
+    editMode();
 }
 
 function createButton(id, text, buttonClass){
