@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             password: password
         };
 
-        // Envoyer la requête POST à votre API
+        // Envoyer la requête POST à l'API
         fetch('http://localhost:5678/api/users/login', {
             method: 'POST',
             headers: {
@@ -74,12 +74,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            // Une fois la réponse reçue, vérifiez si le token est présent
+            // Une fois la réponse reçue, vérifier si le token est présent
             if (data.token) {
                 // Stocker le token dans le localStorage
                 localStorage.setItem('token', data.token);
                 // Rediriger vers la page d'accueil ou effectuer d'autres actions
                 window.location.href = 'index.html';
+
             } else {
                 // Gérer les cas d'erreur ou d'authentification incorrecte
                 console.log('Erreur de connexion');

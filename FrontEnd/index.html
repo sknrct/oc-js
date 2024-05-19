@@ -53,7 +53,18 @@
 					<div class="modal-wrapper js-modal-stop">
 						<button class="js-modal-close"><i class="fa-solid fa-x"></i></button>
 						<p id="titleModal">Galerie Photo</p>
-						<div class="contentModal"></div>
+						<div class="contentModal">
+							<div id="modalGallery"></div>
+							<div id="formDivAddPhoto" style="display: none">
+								<form class="formData" id="formData">
+									<input type="file" name="photoFile" id="photoFile" required>
+									<label>Titre </label>
+									<input type="text" name="photoTitle" id="photoTitle" required>
+									<label>Catégorie </label>
+									<select name="categorySelect" id="categorySelect" required></select>
+								</form>
+							</div>
+						</div>
 						<div class="modalBar"></div>
 						<button class="modalButton">Ajouter une photo</button>
 					</div>

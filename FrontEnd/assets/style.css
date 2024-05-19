@@ -411,7 +411,7 @@ input {
 	cursor: pointer;
 }
 
-.contentModal {
+#modalGallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     gap: 20px;
@@ -443,4 +443,17 @@ input {
 	border-radius: 5px;
 	font-size: 17px;
 	padding: 10px;
+}
+
+#formDivAddPhoto {
+	display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+}
+
+#formDivAddPhoto .formData {
+	display: flex;
+    flex-direction: column;
+    margin: auto;
 }
