@@ -16,7 +16,6 @@ function getWorks() {
         const gallery = document.querySelector("#gallery");
         gallery.innerHTML = "";
         for (let i in works) {
-            //console.log(work.title, work.id);
             figure = createFigure(works[i]);
             gallery.appendChild(figure);
         }
@@ -103,10 +102,8 @@ function isLogged() {
     if (token) {
         // On récupère la partie charge utile du token
         const jwt = JSON.parse(atob(token.split(".")[1]));
-        console.log(jwt);
         // On définie la date en fonction de mtn
         const now = Math.floor(Date.now() / 1000);
-        console.log(now);
         // Vérifie si le token est expiré en comparant le nombre de création et la date d'ajd
         return jwt.exp > now;
     }
@@ -199,7 +196,8 @@ let lastFocusedElement = null;
 const openModal = function (e) {
     e.preventDefault();
     modal = document.querySelector(e.target.getAttribute("href"));
-    console.log(modal);
+    // Reset la modale pour qu'elle affiche la vue gallerie à chaque ouverture
+    resetModal();
     // Appel de la fonction pour récupérer les works
     getWorksInModal();
     // On renvoie les focusables sous forme de tableau
@@ -223,15 +221,40 @@ const closeModal = function (e) {
     if (modal === null) return;
     // Retrouver l'élément focus avant l'ouverture de la modal
     if (lastFocusedElement !== null) lastFocusedElement.focus();
-    e.preventDefault();
+    // e.preventDefault();
     modal.style.display = "none";
     modal.setAttribute("aria-hiden", "true");
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
     modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
     modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
+    document.querySelector(".modalButton").removeEventListener("click", openAddPhotoModal);
+    // Retour de la modale à son état initial
+    resetModal();
     modal = null;
 };
+
+// Reset la modale pour n'afficher que la vue gallerie à l'ouverture
+function resetModal() {
+    const formDivAddPhoto = document.getElementById("formDivAddPhoto");
+    const modalGallery = document.getElementById("modalGallery");
+    const photoTitle = document.getElementById("photoTitle");
+    const file = document.getElementById("photoFile");
+    const categorySelect = document.getElementById("categorySelect");
+    const modalButton = document.querySelector(".modalButton");
+    
+    // Réinitialiser les valeurs du formulaire
+    photoTitle.value = "";
+    file.value = "";
+    categorySelect.innerHTML = "";
+    
+    // Afficher la galerie et masquer le formulaire d'ajout de photo
+    formDivAddPhoto.style.display = "none";
+    modalGallery.style.display = "grid";
+
+    // Forcer l'affichage du bouton Ajouter photos
+    modalButton.style.display = "block";
+}
 
 // Stoper la propagation de la modal -> cliquer dehors ou sur boutton = fermer la modal
 const stopPropagation = function (e) {
@@ -280,9 +303,7 @@ function getWorksInModal() {
     .then(function (works) {
         const modalGalley = document.getElementById("modalGallery");
         modalGalley.innerHTML = "";
-        console.log("Total works : " + works.length);
         for (let i in works) {
-            console.log(works[i].id);
             const modalFigure = createModalFigure(works[i]);
             modalFigure.id = works[i].id;
             modalGalley.appendChild(modalFigure);
@@ -318,7 +339,6 @@ function createModalFigure(work) {
 
 // Supprimer des figures de la modale
 function deleteFigureFromModal(modalFigureId) {
-    console.log("Retrait de l'élément avec l'id" + modalFigureId);
     fetch(urlApi + "/works/" + modalFigureId, {
         method: "DELETE",
         headers: {
@@ -327,7 +347,6 @@ function deleteFigureFromModal(modalFigureId) {
     })
     .then((response) => {
         if (response.ok) {
-            console.log("supprimer");
             const modalFigure = document.getElementById(modalFigureId);
             if (modalFigure) {
                 modalFigure.remove();
@@ -344,31 +363,25 @@ function deleteFigureFromModal(modalFigureId) {
 
 // Fonction pour ouvrir la fenêtre modale d'ajout de photo
 function openAddPhotoModal(e) {
-    // Eviter de recharger la page en coupant le comportement par défaut
     e.preventDefault();
-    // Mettre à jour le titre de la modal
     document.getElementById("titleModal").textContent = "Ajouter une photo";
-    document.querySelector(".modalButton").textContent = "Valider";
-    
-    // Ajouter le formulaire d'ajout de photo
+    document.querySelector(".modalButton").style.display = "none";
+
     const formDivAddPhoto = document.getElementById("formDivAddPhoto");
-    const photoTitle = document.getElementById("photoTitle");
-    const categorySelect = document.getElementById("categorySelect");
-    const file = document.getElementById("photoFile");
     const modalGallery = document.getElementById("modalGallery");
+    const categorySelect = document.getElementById("categorySelect");
     
     modalGallery.style.display = "none";
     formDivAddPhoto.style.display = "flex";
-    
+
     categorySelect.innerHTML = "";
-    
+
     fetch(urlApi + "/categories")
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (categories) {
-        // console.log("Categories:", categories);
-        
+    .then(response => response.json())
+    .then(categories => {
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        categorySelect.appendChild(defaultOption);
         for (let i in categories) {
             const option = document.createElement("option");
             option.setAttribute("value", categories[i].id);
@@ -376,61 +389,50 @@ function openAddPhotoModal(e) {
             categorySelect.appendChild(option);
         }
     });
+
+    const form = document.querySelector("#formData");
+    form.removeEventListener("submit", addPhoto); // Remove existing event listener
+    form.addEventListener("submit", addPhoto); // Add event listener
+}
+
+// Fonction dédiée pour ajouter une photo
+function addPhoto(e) {
+    e.preventDefault();
+    const image = document.getElementById("photoFile");
+    const title = document.getElementById("photoTitle");
+    const category = document.getElementById("categorySelect");
+
     
-    //Au clic sur Valider
-    const modalButton = document.querySelector(".modalButton");
-    
-    modalButton.addEventListener("click", (e) => {
-        // Récupérer les valeurs du formulaire
-        const image = document.getElementById("photoFile");
-        const title = document.getElementById("photoTitle");
-        const category = document.getElementById("categorySelect");
-        
-        // Vérifier le MIME Type du fichier
-        if (!["image/jpeg", "image/png", "application/pdf"].includes(image.files[0].type)) {
-            alert("Seuls les fichiers JPG, PNG et PDF sont autorisés.");
-            return;
+    if (!["image/jpeg", "image/png"].includes(image.files[0].type)) {
+        alert("Seuls les fichiers JPG et PNG sont autorisés.");
+        return;
+    }
+
+    const selectedCategoryID = category.value;
+
+    const formData = new FormData();
+    formData.append("image", image.files[0]);
+    formData.append("title", title.value);
+    formData.append("category", selectedCategoryID);
+
+    fetch(urlApi + "/works", {
+        method: "POST",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors de l'envoi : " + response.statusText);
         }
-        
-        // //Liste des options dans le select "Catégories"
-        // const categoryOptions = category.options;
-        // //Index de l'option choisie par l'utilisateur
-        // const categoryOptionSelectedIndex = categoryOptions[category.selectedIndex]
-        
-        // //Récupérer l'attribut (value) de l'option séléctionée dans la catégorie select
-        // const selectedCategoryID = categoryOptionSelectedIndex.value;
-        
-        // Ligne qui fonctionne dans le terminal mais ne fonctionne pas dans le code
-        // document.getElementById("categorySelect").options[document.getElementById("categorySelect").selectedIndex].value;
-        
-        // Créer le body (corps)
-        const formData = new FormData();
-        formData.append("image", image.files[0]);
-        formData.append("title", title.value);
-        formData.append("category", 2);
-        
-        // Appeler l'endpoint API en POST
-        fetch(urlApi + "/works", {
-            method: "POST",
-            headers: {
-                
-                Authorization: "Bearer " + localStorage.getItem("token")
-            },
-            body: formData
-        })
-        // Faire des trucs avec la réponse (genre dire bravo à l'user ou lui montrer que c'est ajouté)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'envoi : " + response.statusText);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log("Réponse de l'API:", data);
-            alert("Photo ajoutée avec succès !");
-            closeModal();
-            getWorks(); // Actualiser les photos après ajout
-        })
-        .catch((error) => console.error("Erreur:", error));
-    });
+        return response.json();
+    })
+    .then(data => {
+        alert("Photo ajoutée avec succès !");
+        closeModal();
+        getWorks(); // Actualiser les photos après ajout
+        getWorksInModal();
+    })
+    .catch(error => console.error("Erreur:", error));
 }
