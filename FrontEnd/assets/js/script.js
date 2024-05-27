@@ -1,12 +1,14 @@
 let urlApi = "http://localhost:5678/api";
 
+// Récupère et affiche les travaux
 getWorks();
 
+// Vérifie si l'utilisateur est connecté et récupère les catégories si non connecté
 if (!isLogged()) {
     getCategories();
 }
 
-// Affichage des works
+// Fonction pour récupérer les travaux depuis l'API et les afficher
 function getWorks() {
     fetch(urlApi + "/works")
     .then(function (response) {
@@ -22,6 +24,7 @@ function getWorks() {
     });
 }
 
+// Fonction pour récupérer les catégories depuis l'API et les afficher
 function getCategories() {
     fetch(urlApi + "/categories")
     .then(function (response) {
@@ -71,7 +74,7 @@ function createFigure(work) {
     return figure;
 }
 
-//
+// Fonction pour récupérer et afficher les travaux par catégorie
 function getWorksByCategorie(id) {
     fetch(urlApi + "/works")
     .then(function (response) {
@@ -79,11 +82,9 @@ function getWorksByCategorie(id) {
     })
     .then(function (works) {
         const gallery = document.querySelector("#gallery");
-        // vider la galerie + renseigner sur le innerHTML
         gallery.innerHTML = "";
-        // Ajouter les autres éléments
         for (let i in works) {
-            // Si catégories egal 0 OU si catégorie egal works i
+             // Affiche tous les travaux ou ceux de la catégorie sélectionnée
             if (id == 0 || id == works[i].categoryId) {
                 figure = createFigure(works[i]);
                 gallery.appendChild(figure);
@@ -92,24 +93,27 @@ function getWorksByCategorie(id) {
     });
 }
 
+// Fonction pour récupérer le token stocké dans le localStorage
 function getTokenForAPI() {
     return localStorage.getItem("token");
 }
 
+// Vérifie si l'utilisateur est connecté en validant le token
 function isLogged() {
     // Si on trouve le token ou pas
     let token = localStorage.getItem("token");
     if (token) {
-        // On récupère la partie charge utile du token
+        // Décode le token JWT
         const jwt = JSON.parse(atob(token.split(".")[1]));
-        // On définie la date en fonction de mtn
+        // Obtient le temps actuel en secondes
         const now = Math.floor(Date.now() / 1000);
-        // Vérifie si le token est expiré en comparant le nombre de création et la date d'ajd
+        // Vérifie si le token est expiré
         return jwt.exp > now;
     }
     return false;
 }
 
+// Met à jour l'affichage du bouton de connexion/déconnexion
 function updateLoginButton() {
     const loginButton = document.getElementById("login");
     const editButton = document.querySelector(".js-modal");
@@ -126,6 +130,7 @@ function updateLoginButton() {
     }
 }
 
+// Met à jour le bouton de connexion à chaque chargement de page
 window.addEventListener("load", updateLoginButton);
 
 const loginButton = document.getElementById("login");
@@ -156,11 +161,13 @@ function showEditButton() {
     editButton.style.display = "block";
 }
 
+// Fonction pour supprimer les catégories
 function removeCategories() {
     const divCategories = document.getElementById("categories");
     divCategories.remove();
 }
 
+// // Fonction pour afficher le mode edition
 function editMode() {
     const editMode = document.querySelector(".editMode");
     editMode.style.display = "flex";
@@ -305,7 +312,7 @@ function getWorksInModal() {
         modalGalley.innerHTML = "";
         for (let i in works) {
             const modalFigure = createModalFigure(works[i]);
-            modalFigure.id = works[i].id;
+            modalFigure.id = works[i].id; // Définit l'ID de la figure
             modalGalley.appendChild(modalFigure);
             
             // Création du bouton Supprimer avec une icône
@@ -358,7 +365,6 @@ function deleteFigureFromModal(modalFigureId) {
             }
         }
     })
-    .catch((error) => console.error("Erreur:", error));
 }
 
 // Fonction pour ouvrir la fenêtre modale d'ajout de photo
@@ -384,6 +390,7 @@ function openAddPhotoModal(e) {
         categorySelect.appendChild(defaultOption);
         for (let i in categories) {
             const option = document.createElement("option");
+             // Définit la valeur de l'option
             option.setAttribute("value", categories[i].id);
             option.innerHTML = categories[i].name;
             categorySelect.appendChild(option);
@@ -391,8 +398,8 @@ function openAddPhotoModal(e) {
     });
 
     const form = document.querySelector("#formData");
-    form.removeEventListener("submit", addPhoto); // Remove existing event listener
-    form.addEventListener("submit", addPhoto); // Add event listener
+    form.removeEventListener("submit", addPhoto);
+    form.addEventListener("submit", addPhoto);
 }
 
 // Fonction dédiée pour ajouter une photo
@@ -402,12 +409,13 @@ function addPhoto(e) {
     const title = document.getElementById("photoTitle");
     const category = document.getElementById("categorySelect");
 
-    
+    // Vérifier le mime type
     if (!["image/jpeg", "image/png"].includes(image.files[0].type)) {
         alert("Seuls les fichiers JPG et PNG sont autorisés.");
         return;
     }
 
+    // Récupère l'ID de la catégorie sélectionnée
     const selectedCategoryID = category.value;
 
     const formData = new FormData();
@@ -420,6 +428,7 @@ function addPhoto(e) {
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
+        // Ajoute le FormData en tant que corps de la requête
         body: formData
     })
     .then(response => {
@@ -434,5 +443,4 @@ function addPhoto(e) {
         getWorks(); // Actualiser les photos après ajout
         getWorksInModal();
     })
-    .catch(error => console.error("Erreur:", error));
 }

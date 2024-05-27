@@ -221,29 +221,29 @@ footer nav ul {
 	gap: 10px;
 	margin: 0 auto;
 }
-
 .filterButton {
 	padding: 10px;
 	font-family: 'Syne';
 	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
+	color: #1D6154;
+	background-color: white;
+	border: 2px solid #1D6154;
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
-	border: none;
+	border-radius: 60px;
 	cursor: pointer;
 }
 
-/* .editButton {
-	position: absolute;
-    top: 545px;
-    right: 1100px;
-	background: none;
-	border: none;
-	cursor: pointer;
-} */
+.filterButton:hover {
+	background-color: #1D6154;
+	color: white;
+}
+
+.filterButton:focus {
+	background-color: #1D6154;
+	color: white;
+}
 
 .location-modal {
 	display: flex;
