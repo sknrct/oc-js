@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } else {
             // Gérer les cas d'erreur ou d'authentification incorrecte
-            console.log('Erreur de connexion');
+            document.getElementById('error-message').textContent = "Email ou mot de passe incorrects.";
             }
         })
         .catch(error => {
-            console.error('Erreur:', error);
+            document.getElementById('error-message').textContent = "Une erreur est survenue, veuillez réessayer plus tard";
         });
     });
 });
