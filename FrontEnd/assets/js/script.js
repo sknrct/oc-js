@@ -33,8 +33,8 @@ function getCategories() {
     .then(function (categories) {
         // Création des autres bouttons
         createFilterButton(0, "Tous");
-        for (let i in categories) {
-            createFilterButton(categories[i].id, categories[i].name);
+        for (let i of categories) {
+            createFilterButton(i.id, i.name);
         }
     });
 }
@@ -249,11 +249,18 @@ function resetModal() {
     const file = document.getElementById("photoFile");
     const categorySelect = document.getElementById("categorySelect");
     const modalButton = document.querySelector(".modalButton");
-    
+    const imgPreview = document.getElementById("imgPreview");
+    const previewContainer = document.getElementById("previewContainer");
+
     // Réinitialiser les valeurs du formulaire
     photoTitle.value = "";
     file.value = "";
     categorySelect.innerHTML = "";
+
+    // Réinitialiser la preview de la modal
+    imgPreview.setAttribute('src', '');
+    previewContainer.style.display = 'none';
+    file.style.display = 'block';
     
     // Afficher la galerie et masquer le formulaire d'ajout de photo
     formDivAddPhoto.style.display = "none";
@@ -401,6 +408,43 @@ function openAddPhotoModal(e) {
     form.removeEventListener("submit", addPhoto);
     form.addEventListener("submit", addPhoto);
 }
+
+// Fonction pour ajouter une preview du fichier ajouté
+document.addEventListener('DOMContentLoaded', function() {
+    const photoFileInput = document.getElementById('photoFile');
+    const imgPreview = document.getElementById('imgPreview');
+    const previewContainer = document.getElementById('previewContainer');
+    const closePreview = document.getElementById('closePreview');
+    const formDataForm = document.getElementById('formData');
+
+    // Prévisualisation de l'image
+    photoFileInput.addEventListener('change', function() {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function() {
+                imgPreview.setAttribute('src', this.result);
+                previewContainer.style.display = 'block';
+                photoFileInput.style.display = 'none';
+            });
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Fermer la prévisualisation de l'image
+    closePreview.addEventListener('click', function() {
+        imgPreview.setAttribute('src', '');
+        previewContainer.style.display = 'none';
+        photoFileInput.value = ''; // Réinitialise l'input file
+        photoFileInput.style.display = 'block';
+    });
+
+    // Envoi de la photo
+    formDataForm.addEventListener('submit', addPhoto);
+});
 
 // Fonction dédiée pour ajouter une photo
 function addPhoto(e) {

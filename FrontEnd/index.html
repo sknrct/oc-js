@@ -20,10 +20,13 @@
 			<p><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>
 		</div>
 		<nav>
-			<a href="index.html"><h1>Sophie Bluel <span>Architecte d'intérieur</span></h1></a>
+			<a href="index.html">
+				<h1>Sophie Bluel<span>Architecte d'intérieur</span></h1>
+			</a>
 			<ul>
-				<a href="#portfolio"><li>projets</li></a>
-				<a href="#contact"><li>contact</li></a>
+				<li><a href="index.html#portfolio">projets</a></li>
+				<li><a href="index.html#contact">
+				<li>contact</a></li>
 				<li><a id="login" href="login.html">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
@@ -48,8 +51,9 @@
 		<section id="portfolio">
 			<div class="location-modal">
 				<h2>Mes Projets</h2>
-				<a href="#modal" class="js-modal">Modifier</a>
-				<aside id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titleModal" style="display: none;">
+				<a href="#modal" class="js-modal"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
+				<aside id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titleModal"
+					style="display: none;">
 					<div class="modal-wrapper js-modal-stop">
 						<button class="js-modal-close"><i class="fa-solid fa-x"></i></button>
 						<p id="titleModal">Galerie Photo</p>
@@ -58,11 +62,16 @@
 							<div id="formDivAddPhoto" style="display: none">
 								<form class="formData" id="formData">
 									<input type="file" name="photoFile" id="photoFile" required>
+									<div id="previewContainer" style="position: relative; display: none;">
+										<img id="imgPreview" src="" alt="Prévisualisation de l'image"
+											style="max-width: 100%; height: auto;">
+										<span id="closePreview">&times;</span>
+									</div>
 									<label class="titre">Titre </label>
 									<input type="text" name="photoTitle" id="photoTitle" required>
 									<label class="categorie">Catégorie </label>
 									<select name="categorySelect" id="categorySelect" required></select>
-									<input type="submit" value="Valider" id="valider"/>
+									<input type="submit" value="Valider" id="valider" />
 								</form>
 							</div>
 						</div>

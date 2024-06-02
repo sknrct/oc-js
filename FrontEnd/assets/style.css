@@ -220,6 +220,7 @@ footer nav ul {
 	display: flex;
 	gap: 10px;
 	margin: 0 auto;
+	width: 70%;
 }
 .filterButton {
 	padding: 10px;
@@ -400,6 +401,13 @@ select {
 	cursor: pointer;
 }
 
+.js-modal {
+	font-family: 'Work Sans';
+    font-size: 14px;
+	color: #3D3D3D;
+	text-decoration: none;
+}
+
 #modalGallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
@@ -460,4 +468,16 @@ select {
 #formDivAddPhoto .formData .titre,
 #formDivAddPhoto .formData .categorie {
 	margin-bottom: 10px;
+}
+
+#closePreview {
+	position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    background: white;
+    color: black;
+    padding: 5px;
+    font-size: 30px;
+    border: 2px solid black;
 }

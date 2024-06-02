@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
      // Construire le corps de la requête
     const requestBody = {
         email: email,
-         password: password
+        password: password
     };
 
     // Envoyer la requête POST à l'API
