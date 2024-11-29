@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -20,6 +21,9 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Documentation Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Charger URL API depuis les variables d'environnement
+const apiUrl = process.env.API_URL || "http://localhost:5678/api";
 
 // Routes
 const db = require("./models");
