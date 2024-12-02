@@ -1,4 +1,4 @@
-let urlApi = "http://localhost:5678/api";
+let urlApi = process.env.API_URL ||  "http://localhost:5678/api";
 
 // Récupère et affiche les travaux
 getWorks();

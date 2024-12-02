@@ -1,5 +1,5 @@
 
-let urlApi = "http://localhost:5678/api";
+let urlApi = process.env.API_URL ||  "http://localhost:5678/api";
 
 // Executer le code JS après que le DOM soit complètement chargé
 document.addEventListener('DOMContentLoaded', function() {
